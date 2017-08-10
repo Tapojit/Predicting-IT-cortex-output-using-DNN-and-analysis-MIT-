@@ -1,11 +1,28 @@
 function IT_multi(model,cores)
+%Carries out ridge regression to predict individual channels of IT multiunit
+%arrays using given Neural data/DNN final layer output matrix as features.
+
+%Returns a .mat file with name corresponding to feature matrix used. Contains values:
+%Explained explainable variance between corresponding predicted channel values and actual channel values. 
+%Mean explained explainable variance
+%Explained variance in results obtained
+
+%Inputs:
+%model=keyword representing one of 7 data matrices; 'HMO', 'HMAX', 'V4', 'V1', 'V2', 'Kr', 'Ze'
+%cores=number of cores to be made available for parapooling.
+
+
+%IT data path
 IT_data_path='PLoSCB2014_data_20141216/PLoSCB2014_data_20141216/NeuralData_IT_multiunits';
 IT_data=load(IT_data_path);
 IT_data_features=IT_data.features;
 
 IT_data_cases=size(IT_data_features);
 exp_var_arr=zeros(1,IT_data_cases(2));
+
+%Starting parallel pooling
 parpool(cores);
+%looping 168 times to predict individual IT channels
 parfor f=1:IT_data_cases(2)
     
 
@@ -20,7 +37,7 @@ parfor f=1:IT_data_cases(2)
 
     test_rmse=zeros(1,10);
     exp_var=zeros(1,10);
-
+    %10 train test splits for individual channels
     for m=1:10
         IT_train_lab=zeros(1,0.8*IT_data_cases(1));
         IT_test_lab=zeros(1,0.2*IT_data_cases(1));
@@ -106,7 +123,7 @@ parfor f=1:IT_data_cases(2)
 
 
         [err_min,ind]=min(val_error);
-
+        %Calculating encoding model
         b2=ridge_r(IT_train,feature_data_train,ind);
         p_hat_te=mtimes(feature_data_test,b2);
         test_rmse(m)=sqrt(immse(p_hat_te,IT_test));
