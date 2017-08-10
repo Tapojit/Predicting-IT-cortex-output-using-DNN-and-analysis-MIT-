@@ -2,7 +2,7 @@ function IT_multi(model,cores)
 %Carries out ridge regression to predict individual channels of IT multiunit
 %arrays using given Neural data/DNN final layer output matrix as features.
 
-%Returns a .mat file with name corresponding to feature matrix used. Contains values:
+%Returns a file with name corresponding to feature matrix used followed by '_model.mat'. Contains values:
 %Explained explainable variance between corresponding predicted channel values and actual channel values. 
 %Mean explained explainable variance
 %Explained variance in results obtained
@@ -37,7 +37,7 @@ parfor f=1:IT_data_cases(2)
 
     test_rmse=zeros(1,10);
     exp_var=zeros(1,10);
-    %10 train test splits for individual channels
+   
     for m=1:10
         IT_train_lab=zeros(1,0.8*IT_data_cases(1));
         IT_test_lab=zeros(1,0.2*IT_data_cases(1));
@@ -86,7 +86,7 @@ parfor f=1:IT_data_cases(2)
         train_subsam_size=ceil(size(IT_train)/3);
         train_subsam_size=train_subsam_size(1);
         val_error=zeros(1,10);
-
+        %10 train test splits for individual channels
         for a=1:10;
             rmse_val=zeros(1,3);
 
@@ -111,6 +111,7 @@ parfor f=1:IT_data_cases(2)
                     val_sub_f=feature_data_train(1:train_subsam_size,:);
                     val_sub_l=IT_train(1:train_subsam_size);
                 end
+                %calculating encoding model
                 b=ridge_r(training_sub_l,training_sub_f, a);
                 p_hat=mtimes(val_sub_f,b);
                 rmse_val(i)=sqrt(immse(p_hat,val_sub_l));
@@ -125,6 +126,7 @@ parfor f=1:IT_data_cases(2)
         [err_min,ind]=min(val_error);
         %Calculating encoding model
         b2=ridge_r(IT_train,feature_data_train,ind);
+        %making predictions on test features
         p_hat_te=mtimes(feature_data_test,b2);
         test_rmse(m)=sqrt(immse(p_hat_te,IT_test));
         split_size=size(feature_data_test)/2;
@@ -132,19 +134,23 @@ parfor f=1:IT_data_cases(2)
         c1=gather(corr(p_hat_te(1:split_size),IT_test(1:split_size),'type','Pearson'));
         c2=gather(corr(p_hat_te(split_size+1:end),IT_test(split_size+1:end),'type','Pearson'));
         mean_r=(c1+c2)/2;
+        %calculating spearman split-half correlation
         sp_br=(2*mean_r)/(1+mean_r);
 %         corr_exp=corr(p_hat_te,IT_test,'type','Pearson');
+        %Explained explainable variance
         exp_var(m)=sp_br*100;
         disp(['lap ' num2str(m) ' of 10 complete' ])
     end
     disp(['unit ' num2str(f) ' of ' num2str(IT_data_cases(2)) ' done'])
-    
+    %Taking median explained explainable variance from ten train-test split
     exp_var_arr(f)=median(exp_var);
     disp(exp_var_arr(f))
 end
 
 IT.arr=exp_var_arr;
+%Mean explained explainable variance from 168 IT channels
 IT.exp_var=mean(exp_var_arr);
+%Explained variance of spearman correlations from 168 channels
 IT.var=var(exp_var_arr/100)*100;
 filepath=[model '_model' '.mat'];
 save(filepath,'-struct','IT');
