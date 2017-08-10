@@ -1,6 +1,6 @@
 function bar_plot()
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+%Plots bar graph of explained explainable variance
+
 path_suff='_model.mat';
 data_arr=categorical({'HMAX','HMO','Kr','V4','Ze'});
 data_arr_2=categorical({'HMAX','HMO','Krizhevsky','V4','Zeiler'});
