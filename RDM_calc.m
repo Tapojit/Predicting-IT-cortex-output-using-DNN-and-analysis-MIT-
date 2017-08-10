@@ -1,4 +1,15 @@
 function RDM=RDM_calc(type,model)
+%Saves a heatmap of calculated RDM.
+
+%Inputs:
+%type=keyword representing data model type. They are: 'NM' and 'DNN'
+%model=keyword representing model.
+
+%If model is a DNN, two RDM heatmaps are saved. One calculated using DNN model features and the other calculated
+%using IT model features predicted from same DNN features.
+
+
+%Calculating 49x49 matrix
 [a,b]=matrix_summer(type,model);
 RDM=zeros(49,49);
 for i=1:49
