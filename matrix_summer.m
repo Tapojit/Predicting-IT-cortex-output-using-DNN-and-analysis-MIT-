@@ -1,6 +1,10 @@
 function [s,s2] = matrix_summer( pathtype,model )
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+%Returns: 
+%s=
+
+
+
+
 if strcmp(pathtype,'NM')
     path='/cbcl/cbcl01/tdebnath/Work/Expt-cadieu-replicate/PLoSCB2014_data_20141216/PLoSCB2014_data_20141216/';
 else
