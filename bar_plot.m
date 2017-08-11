@@ -5,18 +5,18 @@ path_suff='_model.mat';
 data_arr=categorical({'HMAX','HMO','Kr','V4','Ze'});
 data_arr_2=categorical({'HMAX','HMO','Krizhevsky','V4','Zeiler'});
 exp_var_arr=zeros(1,5);
-var=zeros(1,5);
+std_dev=zeros(1,5);
 matrix=zeros(5,168);
 for i=1:size(exp_var_arr,2);
     m=load([char(data_arr(i)) path_suff]);
     exp_var_arr(i)=m.exp_var;
-    var(i)=m.var;
+    std_dev(i)=m.std_dev;
     matrix(i,:)=m.arr;
 end
 figure
 hold on
 bar(data_arr_2,exp_var_arr, 'r')
-errorbar(exp_var_arr,var,'.','Color','black')
+errorbar(exp_var_arr,std_dev,'.','Color','black')
 ylabel('Explained variance (%)')
 xlabel('DNNS & Neural models')
 ax=gca;
