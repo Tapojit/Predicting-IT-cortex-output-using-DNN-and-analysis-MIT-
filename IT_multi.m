@@ -19,6 +19,7 @@ IT_data_features=IT_data.features;
 
 IT_data_cases=size(IT_data_features);
 exp_var_arr=zeros(1,IT_data_cases(2));
+std_dev_arr=zeros(1,IT_data_cases(2));
 
 %Starting parallel pooling
 parpool(cores);
@@ -144,14 +145,16 @@ parfor f=1:IT_data_cases(2)
     disp(['unit ' num2str(f) ' of ' num2str(IT_data_cases(2)) ' done'])
     %Taking median explained explainable variance from ten train-test split
     exp_var_arr(f)=median(exp_var);
+    %Taking standard deviation from ten train-test splits
+    std_dev_arr(f)=std(exp_var);
     disp(exp_var_arr(f))
 end
 
 IT.arr=exp_var_arr;
 %Mean explained explainable variance from 168 IT channels
 IT.exp_var=mean(exp_var_arr);
-%Explained variance of spearman correlations from 168 channels
-IT.var=var(exp_var_arr/100)*100;
+%Mean standard deviation over 168 channels
+IT.std_dev=mean(std_dev_arr);
 filepath=[model '_model' '.mat'];
 save(filepath,'-struct','IT');
 end
