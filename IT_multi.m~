@@ -49,7 +49,7 @@ parfor f=1:label_data_cases(2)
                 label_train_lab(a)=i;
                 a=a+1;
             else
-                label_test_lab(b)=i;
+                IT_test_lab(b)=i;
                 b=b+1;
             end
         end
@@ -84,7 +84,7 @@ parfor f=1:label_data_cases(2)
         feature_data_test=feature_data(label_test_lab,:);
 
 
-        train_subsam_size=ceil(size(label_train)/3);
+        train_subsam_size=ceil(size(labey_train)/3);
         train_subsam_size=train_subsam_size(1);
         val_error=zeros(1,10);
         %10 train test splits for individual channels
@@ -98,19 +98,19 @@ parfor f=1:label_data_cases(2)
                 
                 if i==1
                     training_sub_f=feature_data_train(1:train_subsam_size*2,:);
-                    training_sub_l=label_train(1:train_subsam_size*2);
+                    training_sub_l=IT_train(1:train_subsam_size*2);
                     val_sub_f=feature_data_train((train_subsam_size*2)+1:end,:);
-                    val_sub_l=label_train((train_subsam_size*2)+1:end);
+                    val_sub_l=IT_train((train_subsam_size*2)+1:end);
                 elseif i==2
                     training_sub_f=feature_data_train([1:train_subsam_size,(train_subsam_size*2)+1:end],:);
-                    training_sub_l=label_train([1:train_subsam_size,(train_subsam_size*2)+1:end]);
+                    training_sub_l=IT_train([1:train_subsam_size,(train_subsam_size*2)+1:end]);
                     val_sub_f=feature_data_train(train_subsam_size+1:(train_subsam_size*2),:);
-                    val_sub_l=label_train(train_subsam_size+1:(train_subsam_size*2));
+                    val_sub_l=IT_train(train_subsam_size+1:(train_subsam_size*2));
                 else
                     training_sub_f=feature_data_train(train_subsam_size+1:end,:);
-                    training_sub_l=label_train(train_subsam_size+1:end);
+                    training_sub_l=IT_train(train_subsam_size+1:end);
                     val_sub_f=feature_data_train(1:train_subsam_size,:);
-                    val_sub_l=label_train(1:train_subsam_size);
+                    val_sub_l=IT_train(1:train_subsam_size);
                 end
                 %calculating encoding model
                 b=ridge_r(training_sub_l,training_sub_f, a);
@@ -126,14 +126,14 @@ parfor f=1:label_data_cases(2)
 
         [err_min,ind]=min(val_error);
         %Calculating encoding model
-        b2=ridge_r(label_train,feature_data_train,ind);
+        b2=ridge_r(IT_train,feature_data_train,ind);
         %making predictions on test features
         p_hat_te=mtimes(feature_data_test,b2);
-        test_rmse(m)=sqrt(immse(p_hat_te,label_test));
+        test_rmse(m)=sqrt(immse(p_hat_te,IT_test));
         split_size=size(feature_data_test)/2;
         split_size=split_size(1);
-        c1=gather(corr(p_hat_te(1:split_size),label_test(1:split_size),'type','Pearson'));
-        c2=gather(corr(p_hat_te(split_size+1:end),label_test(split_size+1:end),'type','Pearson'));
+        c1=gather(corr(p_hat_te(1:split_size),IT_test(1:split_size),'type','Pearson'));
+        c2=gather(corr(p_hat_te(split_size+1:end),IT_test(split_size+1:end),'type','Pearson'));
         mean_r=(c1+c2)/2;
         %calculating spearman split-half correlation
         sp_br=(2*mean_r)/(1+mean_r);
@@ -150,13 +150,13 @@ parfor f=1:label_data_cases(2)
     disp(exp_var_arr(f))
 end
 
-label.arr=exp_var_arr;
+IT.arr=exp_var_arr;
 %Mean explained explainable variance from 168 IT channels
-label.exp_var=mean(exp_var_arr);
+IT.exp_var=mean(exp_var_arr);
 %Mean standard deviation over 168 channels
-label.std_dev=mean(std_dev_arr);
+IT.std_dev=mean(std_dev_arr);
 filepath=[model '_model' '.mat'];
-save(filepath,'-struct','label');
+save(filepath,'-struct','IT');
 end
 
 
