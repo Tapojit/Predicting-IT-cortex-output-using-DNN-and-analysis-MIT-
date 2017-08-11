@@ -1,4 +1,4 @@
-function predicted_label_reliability(label_path, model,cores)
+function predicted_label_reiliability(label_path, model,cores)
 %Carries out ridge regression to predict individual channels of label multiunit
 %arrays using given Neural data/DNN final layer output matrix as features.
 
