@@ -15,6 +15,8 @@ classdef crossvalidation < handle
     end
     
     methods
+        %Carries out crossvalidation using ridge regression. Requires at
+        %least first two arguments.
         function obj = crossvalidation(cov_data,resp_data,cores,alpha_array,loss,cv_reps)
             obj.cov=cov_data;
             obj.resp=resp_data;
@@ -28,9 +30,12 @@ classdef crossvalidation < handle
                 obj.loss=loss;
             end
             alpha_loss_arr=zeros(size(obj.alpha_array,2),size(resp_data,2));
+            %Starting parallel pooling
             parpool(obj.cores);
-            for i=1:size(obj.alpha_array,2)
+            %Iterating over alpha array to determine optimum alpha
+            parfor i=1:size(obj.alpha_array,2)
                 loss_arr=zeros(cv_reps,size(resp_data,2));
+                %Iterating over crossvalidation range for individual alpha
                 for a=1:obj.cv_reps
                     reg=ridge_regression(cov_data,resp_data,obj.alpha_array(i),a);
                     resp_predicted=reg.predict();
@@ -47,9 +52,12 @@ classdef crossvalidation < handle
             [min_err,ind]=min(mean(alpha_loss_arr,2));
             obj.min_val_error=min_err;
             obj.optimum_alpha=obj.alpha_array(ind);
+            delete(gcp);
             
             
         end
+        
+        %Initializing default values
         function obj=init(obj)
             obj.cores=1;
             obj.alpha_array=[1:10];
@@ -57,7 +65,8 @@ classdef crossvalidation < handle
             obj.loss='RMSE';
             
         end
-
+        
+        %Calculating betas over response matrix channels using optimum alpha 
         function obj=retrainer(obj,cov,resp)
             if nargin==1
                 cov=obj.cov;

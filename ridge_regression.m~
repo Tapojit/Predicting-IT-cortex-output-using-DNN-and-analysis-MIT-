@@ -7,13 +7,17 @@ classdef ridge_regression < handle
         resp_data_shape
         resp_test
     end
+    
     properties (Access=private)
         cov_train
         cov_test
         resp_train
         
     end
+    
     methods
+        %Takes in as input-covariate data matrix, response data matrix,
+        %alpha and seed. Works if seed argument not provided
         function obj=ridge_regression(cov_data, resp_data,alpha, seed)
             obj.cov_data_shape=size(cov_data);
             obj.resp_data_shape=size(resp_data);
@@ -40,6 +44,7 @@ classdef ridge_regression < handle
                     test=test+1;
                 end
             end
+            %Carrying out ridge regression.
             for m=1:obj.resp_data_shape(2)
                 obj.beta_trained(:,:,m)=ridge_r(obj.resp_train(:,m),obj.cov_train,alpha);
             end
@@ -47,6 +52,7 @@ classdef ridge_regression < handle
             
             
         end
+        %Initializes variables and default values
         function obj=init(obj)
             rng(obj.train_test_seed);
             arr=[zeros(1,(1960*0.2)),ones(1,(1960*0.8))];
@@ -57,24 +63,26 @@ classdef ridge_regression < handle
             obj.resp_test=zeros((1960*0.2),obj.resp_data_shape(2));
             obj.beta_trained=zeros(obj.cov_data_shape(2),1,obj.resp_data_shape(2));
         end
+        %Makes predictions on test covariates. Returns predicted response
+        %matrix.
         function predicted_figures=predict(obj,test_features)
             if nargin~=2
                 test_features=obj.cov_test;
             end
-            predicted_figures=zeros((1960*0.2),obj.resp_data_shape(2));
+            predicted_figures=zeros(size(test_features,1),obj.resp_data_shape(2));
             for i=1:obj.resp_data_shape(2)
                 predicted_figures(:,i)=mtimes(test_features,obj.beta_trained(:,:,i));
             end
         end
         
-        function loss=rmse_loss(predicted,actual)
+        function loss=rmse_loss(obj,predicted,actual)
             loss=zeros(1,size(predicted,2));
             for i=1:size(predicted,2)
                 loss(i)=sqrt(mean((predicted(:,i)-actual(:,i)).^2));
             end
         end
         
-        function loss=mse_loss(predicted,actual)
+        function loss=mse_loss(obj,predicted,actual)
             loss=zeros(1,size(predicted,2));
             for i=1:size(predicted,2)
                 loss(i)=mean((predicted(:,i)-actual(:,i)).^2);
