@@ -27,24 +27,24 @@ classdef crossvalidation < handle
                 obj.alpha_array=alpha_array;
                 obj.loss=loss;
             end
-            alpha_loss_arr=zeros(1,size(obj.alpha_array));
-            parpool(obj.cores);
-            parfor i=1:size(obj.alpha_array)
-                loss_arr=zeros(1,cv_reps);
-                for a=1:cv_reps
+            alpha_loss_arr=zeros(size(obj.alpha_array,2),size(resp_data,2));
+% %         parpool(obj.cores);
+            for i=1:size(obj.alpha_array,2)
+                loss_arr=zeros(cv_reps,size(resp_data,2));
+                for a=1:obj.cv_reps
                     reg=ridge_regression(cov_data,resp_data,obj.alpha_array(i),a);
                     resp_predicted=reg.predict();
                     true_resp=reg.resp_test;
                     if strcmp('RMSE',obj.loss)
-                        loss_arr(a)=rmse_loss(resp_predicted,true_resp);
+                        loss_arr(a,:)=reg.rmse_loss(resp_predicted,true_resp);
                     else
-                        loss_arr(a)=mse_loss(resp_predicted,true_resp);
+                        loss_arr(a,:)=reg.mse_loss(resp_predicted,true_resp);
                     end
                 end
-                alpha_loss_arr(i)=mean(loss_arr);
+                alpha_loss_arr(i,:)=mean(loss_arr);
 
             end
-            [min_err,ind]=min(alpha_loss_arr);
+            [min_err,ind]=min(mean(alpha_loss_arr,2));
             obj.min_val_error=min_err;
             obj.optimum_alpha=obj.alpha_array(ind);
             
@@ -57,25 +57,14 @@ classdef crossvalidation < handle
             obj.loss='RMSE';
             
         end
-        function loss=rmse_loss(predicted,actual)
-            loss=zeros(1,size(predicted,2));
-            for i=1:size(predicted,2)
-                loss(i)=sqrt(mean((predicted(:,i)-actual(:,i)).^2));
-            end
-        end
-        
-        function loss=mse_loss(predicted,actual)
-            loss=zeros(1,size(predicted,2));
-            for i=1:size(predicted,2)
-                loss(i)=mean((predicted(:,i)-actual(:,i)).^2);
-            end
-        end
+
         function obj=retrainer(obj,cov,resp)
             if nargin==1
                 cov=obj.cov;
                 resp=obj.resp;
             end
-            reg=ridge_regression(cov,resp,obj.optimum_alpha,
+            reg=ridge_regression(cov,resp,obj.optimum_alpha,datasample([1:obj.cv_reps],1));
+            obj.beta_trained=reg.beta_trained;
         end
             
     end

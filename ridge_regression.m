@@ -61,9 +61,23 @@ classdef ridge_regression < handle
             if nargin~=2
                 test_features=obj.cov_test;
             end
-            predicted_figures=zeros((1960*0.2),obj.resp_data_shape(2));
+            predicted_figures=zeros(size(test_features,1),obj.resp_data_shape(2));
             for i=1:obj.resp_data_shape(2)
                 predicted_figures(:,i)=mtimes(test_features,obj.beta_trained(:,:,i));
+            end
+        end
+        
+        function loss=rmse_loss(obj,predicted,actual)
+            loss=zeros(1,size(predicted,2));
+            for i=1:size(predicted,2)
+                loss(i)=sqrt(mean((predicted(:,i)-actual(:,i)).^2));
+            end
+        end
+        
+        function loss=mse_loss(obj,predicted,actual)
+            loss=zeros(1,size(predicted,2));
+            for i=1:size(predicted,2)
+                loss(i)=mean((predicted(:,i)-actual(:,i)).^2);
             end
         end
         
