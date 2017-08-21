@@ -1,6 +1,6 @@
 function transfer_learnng()
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+%Makes inferences on pretrained AlexNet using images to get
+%final fully connected layer's output
 net=load('alexnet-caffe');
 net=vl_simplenn_tidy(net);
 fcn_shape=net.layers{end-1}.size(3);
