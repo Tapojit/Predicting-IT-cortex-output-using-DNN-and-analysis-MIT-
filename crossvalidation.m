@@ -2,7 +2,7 @@
 % that can predict a response value based on a set of predictor values. To find the beta values, a 
 % cross-validation loop is used and 
 
-i% s object does cross-validation over an input alpha array and generates beta based on the optimum alpha. 
+% s object does cross-validation over an input alpha array and generates beta based on the optimum alpha. 
 
 classdef crossvalidation < handle
     
