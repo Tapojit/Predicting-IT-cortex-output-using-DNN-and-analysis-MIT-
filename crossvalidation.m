@@ -17,8 +17,8 @@ classdef crossvalidation < handle
     end
     
     properties (Access=private)
-        cov
-        resp
+        cov_
+        resp_
     end
     
     methods
@@ -26,8 +26,8 @@ classdef crossvalidation < handle
         %Carries out crossvalidation using ridge regression. Requires at least first two arguments.
         function obj = crossvalidation(cov_data,resp_data,cores,alpha_array,loss,cv_reps)
             
-            obj.cov=cov_data;
-            obj.resp=resp_data;
+            obj.cov_=cov_data;
+            obj.resp_=resp_data;
             
             if nargin < 3
                 obj = obj.init();
@@ -84,12 +84,12 @@ classdef crossvalidation < handle
         end
         
         %Calculating betas over response matrix channels using optimum alpha 
-        function obj=retrainer(obj,cov,resp)
+        function obj=retrainer(obj,cov_,resp_)
             if nargin==1
-                cov=obj.cov;
-                resp=obj.resp;
+                cov_=obj.cov_;
+                resp_=obj.resp_;
             end
-            reg=ridge_regression(cov,resp,obj.optimum_alpha,datasample([1:obj.cv_reps],1));
+            reg=ridge_regression(cov_,resp_,obj.optimum_alpha,datasample([1:obj.cv_reps],1));
             obj.beta_trained=reg.beta_trained;
         end
             
