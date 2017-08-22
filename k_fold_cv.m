@@ -104,7 +104,7 @@ classdef k_fold_cv < handle
         end
         
         %Carries out ridge regression and returns decision rule (beta)
-        function beta = ridge_reg( resp_vector, cov_matrix, alpha )
+        function beta = ridge_reg(obj, resp_vector, cov_matrix, alpha )
 
             x_f = size(cov_matrix, 2);
 
