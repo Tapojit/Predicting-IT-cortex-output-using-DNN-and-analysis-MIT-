@@ -122,7 +122,7 @@ classdef reliability_test < handle
                 disp(['Channel ' num2str(i) ' of ' num2str(obj.resp_data_shape(2)) ' done'])
                 
             end
-            
+            obj.beta_trained = betas;
             %Array of explained explainable variance
             data.arr = exp_var_arr;
             %Mean explained explainable variance over all response matrix channels
