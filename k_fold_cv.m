@@ -1,3 +1,5 @@
+%Carries out k-fold-cross-validation using given covariate matrix and response vector
+
 classdef k_fold_cv < handle
     
     properties
@@ -15,7 +17,16 @@ classdef k_fold_cv < handle
     end
     
     methods
-        
+        %%%%%Arguments - Requires first two arguments or all%%%%%%%%
+        %cov_matrix=covariate data matrix
+        %resp_vec=response vetor
+        %hyp_arr=array of hyperparameters over which crossvalidation is carried out
+        %folds=number of folds in crossvalidation
+        %reg_alg=String representing algorithm used for regression. Eg: 'Ridge_reg' represents ridge regression
+        %loss=String representing loss function. Eg: 'RMSE' represents Root mean squared error. 'MSE' represents Mean squared error.
+        %%%%%Returns%%%%%%%%
+        %object
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function obj = k_fold_cv(cov_matrix, resp_vec, hyp_arr, folds, reg_alg, loss)
             obj = obj.init();
             obj.cov_matrix_shape = size(cov_matrix);
@@ -31,6 +42,7 @@ classdef k_fold_cv < handle
             fold_shape_arr=zeros(1,folds);
             data_case_no = size(cov_matrix, 1);
             
+            %Calculating proportion of data cases for each fold
             for i = 1:folds
                 if i == folds
                     fold_shape_arr(i) = data_case_no - sum(fold_shape_arr(1:folds-1));
@@ -42,9 +54,10 @@ classdef k_fold_cv < handle
             
             
             cv_hyp_loss = zeros(1, size(obj.hyp_arr, 2));
-
+            %Looping over hyperparameter array to determine optimum hyperparameter value
             for m = 1:size(obj.hyp_arr, 2)
                 hyp_loss_arr = zeros(1, folds);
+                %Looping over folds
                 for a = 1:folds
                     if a == 1
                         cv_cov_tr = cov_matrix((fold_shape_arr(a)+1:end),:);
@@ -64,16 +77,20 @@ classdef k_fold_cv < handle
                         cv_cov_val = cov_matrix((part_1_sum+1:part_2_sum),:);
                         cv_resp_val = resp_vec((part_1_sum+1:part_2_sum),:);
                     end
-
+                    %If ridge regression is chosen as preferred regression algorithm:
                     if strcmp(obj.reg_alg, 'Ridge_reg')
-
+                        %Validation beta
                         beta = ridge_reg(cv_resp_tr, cv_cov_tr, obj.hyp_arr(m));
                         pred_vector = predict(beta, cv_cov_val);
 
                     end
+                    %%%Calculating validation loss%%%%
+                    
+                    %For RMSE loss:
                     if strcmp(obj.loss, 'RMSE')
 
                         hyp_loss_arr(a) = rmse_loss(pred_vector, cv_resp_val);
+                    %For MSE loss:
                     else
 
                         hyp_loss_arr(a) = mse_loss(pred_vector, cv_resp_val);
@@ -81,19 +98,23 @@ classdef k_fold_cv < handle
                     end
 
                 end
-
+                %Calculating and storing mean validation error over folds for current hyperparameter value
                 cv_hyp_loss(m) = mean(hyp_loss_arr);
 
             end
-                
+            
+            %Determining minimum mean validation error and index of optimum hyperparameter  
             [err_min, indx] = min(cv_hyp_loss);
-
+            
+            %Optimum hyperparameter
             obj.opt_hyp = obj.hyp_arr(indx);
             
+            %Smallest mean validation loss
             obj.min_loss = err_min;            
                         
         end
         
+        %Initializing default values
         function obj = init(obj)
             
             obj.hyp_arr = [1:10];
