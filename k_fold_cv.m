@@ -125,6 +125,15 @@ classdef k_fold_cv < handle
         end
         
         %Carries out ridge regression and returns decision rule (beta)
+        %%%%%%%Arguments%%%%%
+        %obj=object
+        %resp_vector=response vector
+        %cov_matrix=covariate matrix
+        %alpha=hyperparameter value
+        %%%%%Returns%%%%%
+        
+        %beta=decision rule
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function beta = ridge_reg(obj, resp_vector, cov_matrix, alpha )
 
             x_f = size(cov_matrix, 2);
@@ -138,6 +147,14 @@ classdef k_fold_cv < handle
         end
         
         %RMSE (Root Mean Squared Error) loss function
+        %%%%%%Arguments%%%%%%
+        %obj=object
+        %predicted=predicted response vector
+        %actual=actual response vector
+        
+        %%%%%%%Returns%%%%%%%%
+        %loss=RMSE loss value
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function loss = rmse_loss(obj, predicted, actual)
             
             loss = sqrt(mean((predicted-actual).^2));
@@ -145,6 +162,14 @@ classdef k_fold_cv < handle
         end
         
         %MSE (Mean Squared Error) loss function
+        %%%%%%Arguments%%%%%%
+        %obj=object
+        %predicted=predicted response vector
+        %actual=actual response vector
+        
+        %%%%%%%Returns%%%%%%%%
+        %loss=MSE loss value
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function loss = mse_loss(obj, predicted, actual)
             
             loss = mean((predicted-actual).^2);
@@ -153,6 +178,14 @@ classdef k_fold_cv < handle
         
         %Makes predictions on test covariates. Returns predicted response
         %vector.
+        %%%%%%Arguments%%%%%%
+        %obj=object
+        %beta=decision rule from training
+        %test_features=Test covariate matrix
+        
+        %%%%%%%Returns%%%%%%%%
+        %predicted_figures=predicted response vector
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function predicted_figures=predict(obj, beta, test_features)
             
             predicted_figures = mtimes(test_features, beta);
