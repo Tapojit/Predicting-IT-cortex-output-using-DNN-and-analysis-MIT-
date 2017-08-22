@@ -64,7 +64,7 @@ classdef k_fold_cv < handle
                         cv_resp_tr = resp_vec((fold_shape_arr(a)+1:end),:);
                         cv_cov_val = cov_matrix((1:fold_shape_arr(a)),:);
                         cv_resp_val = resp_vec((1:fold_shape_arr(a)),:);
-                    elseif a == fold
+                    elseif a == folds
                         cv_cov_tr = cov_matrix((1:sum(fold_shape_arr(1:end-1))),:);
                         cv_resp_tr = resp_vec((1:sum(fold_shape_arr(1:end-1))),:);
                         cv_cov_val = cov_matrix((sum(fold_shape_arr(1:end-1))+1:end),:);
@@ -72,13 +72,13 @@ classdef k_fold_cv < handle
                     else
                         part_1_sum = sum(fold_shape_arr(1:a-1));
                         part_2_sum = sum(fold_shape_arr(1:a));
-                        cv_cov_tr = [cov_matrix((1:part_1_sum),:) cov_matrix((part_2_sum+1:end),:)];
-                        cv_resp_tr = [resp_vec((1:part_1_sum),:) resp_vec((part_2_sum+1:end),:)];
+                        cv_cov_tr = [cov_matrix((1:part_1_sum),:); cov_matrix((part_2_sum+1:end),:)];
+                        cv_resp_tr = [resp_vec((1:part_1_sum),:); resp_vec((part_2_sum+1:end),:)];
                         cv_cov_val = cov_matrix((part_1_sum+1:part_2_sum),:);
                         cv_resp_val = resp_vec((part_1_sum+1:part_2_sum),:);
                     end
                     %Validation beta
-                    obj.reg_alg.fit(cv_resp_tr, cv_cov_tr, obj.hyp_arr(m));
+                    obj.reg_alg.fit(cv_cov_tr, cv_resp_tr, obj.hyp_arr(m));
                     pred_vector = obj.reg_alg.predict(cv_cov_val);
 
                     %%%Calculating validation loss%%%%

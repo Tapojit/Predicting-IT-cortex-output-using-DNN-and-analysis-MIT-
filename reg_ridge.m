@@ -16,7 +16,7 @@ classdef reg_ridge < handle
         
         %obj.beta=decision rule
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        function obj = fit(cov_matrix, resp_vec, alpha)
+        function obj = fit(obj, cov_matrix, resp_vec, alpha)
             x_f = size(cov_matrix, 2);
 
             G = (alpha^2)*eye(x_f);
