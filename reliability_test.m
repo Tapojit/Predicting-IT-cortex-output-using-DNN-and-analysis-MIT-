@@ -54,7 +54,7 @@ classdef reliability_test < handle
                 train_test_split = obj.train_test_split;
             end
             
-            
+            betas = zeros(obj.cov_data_shape(2),1, obj.reps, obj.resp_data_shape(2));
             
             exp_var_arr = zeros(1, obj.resp_data_shape(2));
             
@@ -65,15 +65,15 @@ classdef reliability_test < handle
             parfor i = 1:obj.resp_data_shape(2)
                 
                 resp_vec = resp_data(:,i);
-                resp_tr = zeros((train_test_split*obj.cov_data_shape(1)),1);
-                resp_te = zeros(((1-train_test_split)*obj.cov_data_shape(1)),1);
-                cov_tr = zeros((train_test_split*obj.cov_data_shape(1)),obj.cov_data_shape(2));
-                cov_te = zeros(((1-train_test_split)*obj.cov_data_shape(1)),obj.cov_data_shape(2));
+                resp_tr = zeros((train_test_split*size(cov_data,1)),1);
+                resp_te = zeros(((1-train_test_split)*size(cov_data,1)),1);
+                cov_tr = zeros((train_test_split*size(cov_data,1)),size(cov_data,2));
+                cov_te = zeros(((1-train_test_split)*size(cov_data,1)),size(cov_data,2));
                 
                 exp_var = zeros(1, reps);
                 %Starting loop over train-test reps
                 for a = 1:reps
-                    split_arr = [zeros(1, (obj.cov_data_shape(1)*train_test_split)) ones(1, (cobj.ov_data_shape(1)*(1-train_test_split)))];
+                    split_arr = [zeros(1, (size(cov_data,1)*train_test_split)) ones(1, (cobj.ov_data_shape(1)*(1-train_test_split)))];
                     
                     %Generating deterministically training data and test data for current split
                     rng(i);
@@ -94,13 +94,13 @@ classdef reliability_test < handle
                     end
                     
                     %Carrying out regression
-                    reg = k_fold_cv(cov_tr, resp_tr, hyp_arr, 3, 'Ridge_reg', 'RMSE');
+                    reg = k_fold_cv(cov_tr, resp_tr, hyp_arr, 3, reg_ridge, 'RMSE');
                     
                     %Calculating and storing betas
-                    obj.beta_trained(:,:,a,i) = reg.ridge_reg(resp_tr, cov_tr, reg.opt_hyp);
-                    
+                    reg_2 = reg_ridge.fit(cov_tr, resp_tr, reg.opt_hyp);
+                    betas(:,:,a,i)=reg_2.beta;
                     %Making predictions
-                    pred_resp = reg.predict(obj.beta_trained(:,:,a,i), cov_te);
+                    pred_resp = reg_2.predict(cov_te);
                     
                     split_half = ceil(size(pred_resp,1)/2);
                     
