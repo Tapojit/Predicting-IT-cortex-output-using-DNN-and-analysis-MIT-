@@ -41,7 +41,8 @@ There are more arguments for *Cadieu_RCV*, but the first three are compulsory. E
 
 In this case, summary results such as mean explained variance for the entire predicted IT matrix, explained variance for individual channels/columns of predicted IT matrix will be stored in a .mat file with filename 'IT & V4'.
 
-It is recommended to look at the comments in the scripts, which can be used as guides to create other objects to obtain other forms of statistical analyses from this kind of data.
+
+You can go through the comments in the scripts if you want to create other objects to obtain other forms of statistical analyses from this kind of data
 
 ##  References
 1.  “1.5 - The Coefficient of Determination, r-Squared | STAT 501,” https://onlinecourses.science.psu.edu/stat501/node/255.
