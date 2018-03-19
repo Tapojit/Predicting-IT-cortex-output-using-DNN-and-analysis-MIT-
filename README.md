@@ -105,7 +105,39 @@ Here are the RDMs displayed:
 <p align="center">
   <img width="600" height="500" src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img3.PNG">
 </p>
-
+<p align="center">
+  <img width="600" height="500" src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img4.PNG">
+</p>
+<p align="center">
+  <img width="600" height="500" src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img5.PNG">
+</p>
+<p align="center">
+  <img width="600" height="500" src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img6.PNG">
+</p>
+<p align="center">
+  <img width="600" height="500" src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img7.PNG">
+</p>
+<p align="center">
+  <img width="600" height="500" src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img8.PNG">
+</p>
+<p align="center">
+  <img width="600" height="500" src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img9.PNG">
+</p>
+<p align="center">
+  <img width="600" height="500" src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img10.PNG">
+</p>
 Lighter color indicates stronger similarity between two subcategories.
 The lines below calculate RDM matrices, create heat maps out of them and save them as png images.
 
+```
+RDM_calc('NM','IT');%For IT cortex
+RDM_calc('NM','V4');%For V4 cortex
+```
+The RDMS calculated with functions above will be saved with  *'_Neural Representations.png'* suffix.
+```
+RDM_calc('DNN','HMO');%For HMO
+RDM_calc('DNN','Kr');%For Krizhevsky et al. 2012
+RDM_calc('DNN', 'Ze');%For Zeiler & Fergus 2013
+```
+The RDMS calculated with functions above will be saved with  *'_Model Representations.png'* suffix and *'_Model Representations + IT-fit.png'*.
+The RDM_calc function takes in two arguments, data type and neural/model representation name.
