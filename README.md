@@ -185,3 +185,6 @@ save('AlexNet2012','a');%Saving DNN code
 ```
 *imdb.mat* creates a database of input images, which are 227x227x3 center crops of the images. Mean image of pretrained model is subtracted from each image matrix.
 
+# NOTES
+
+Tools for carrying out further reliability tests on predicted IT Neural outputs are available in the **Comprehensive reliability analysis** directory
