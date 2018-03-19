@@ -77,3 +77,35 @@ predicted_label_reliability('PLoSCB2014_data_20141216/PLoSCB2014_data_20141216/N
 predicted_label_reliability('PLoSCB2014_data_20141216/PLoSCB2014_data_20141216/NeuralData_IT_multiunits.mat','Ze',16);
 predicted_label_reliability('PLoSCB2014_data_20141216/PLoSCB2014_data_20141216/NeuralData_IT_multiunits.mat','V4',16);
 ```
+Here is a bar chart of the results:
+<p align="center">
+  <img src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img1.PNG">
+</p>
+
+The error bars represent explained variance, whereas the barplot represents the explained explainable variance. As can be seen, results of Krizhevsky et al. and Zeiler & Fergus are comparable to that of V4.
+
+Here is a scatter plot of 168 points representing the IT multi unit channels, comparing results of V4 and Zeiler & Fergus.
+<p align="center">
+  <img src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img2.PNG">
+</p>
+
+The Pearson correlation coefficient of the scatter plot is **0.50379**.
+
+##  3) RDM calculation
+Seven categories of images were shown to the primate; animals, cars, chairs, faces, fruits, planes, tables. Each category has seven subcategories.
+
+RDM (Representational dissimilarity matrices), in this case, displayed the similarities between IT neural representational vectors of each subcategory. Since there are seven sucategories for each of the seven categories, the RDM matrix calculated here is 49x49. They are calculated using this formula:
+<p align="center">
+  <img src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/eqn4.PNG">
+</p>
+
+where *i* and *j* are rows of the feature matrix.
+
+Here are the RDMs displayed:
+<p align="center">
+  <img src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img3.PNG">
+</p>
+
+Lighter color indicates stronger similarity between two subcategories.
+The lines below calculate RDM matrices, create heat maps out of them and save them as png images.
+
