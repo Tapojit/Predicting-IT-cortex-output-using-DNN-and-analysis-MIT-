@@ -79,14 +79,14 @@ predicted_label_reliability('PLoSCB2014_data_20141216/PLoSCB2014_data_20141216/N
 ```
 Here is a bar chart of the results:
 <p align="center">
-  <img src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img1.PNG">
+  <img width="600" height="500" src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img1.PNG">
 </p>
 
 The error bars represent explained variance, whereas the barplot represents the explained explainable variance. As can be seen, results of Krizhevsky et al. and Zeiler & Fergus are comparable to that of V4.
 
 Here is a scatter plot of 168 points representing the IT multi unit channels, comparing results of V4 and Zeiler & Fergus.
 <p align="center">
-  <img src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img2.PNG">
+  <img width="600" height="500" src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img2.PNG">
 </p>
 
 The Pearson correlation coefficient of the scatter plot is **0.50379**.
@@ -103,7 +103,7 @@ where *i* and *j* are rows of the feature matrix.
 
 Here are the RDMs displayed:
 <p align="center">
-  <img src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img3.PNG">
+  <img width="600" height="500" src="https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/img/img3.PNG">
 </p>
 
 Lighter color indicates stronger similarity between two subcategories.
