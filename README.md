@@ -2,7 +2,7 @@
 
 Deep neural nets consist of multiple layers to process input images. In a similar way, visual cortex of the primate brain has multiple layers which process visual stimuli incoming from the optic nerve. They are arranged in this order: V1, V2, V3, V4, IT(Inferior Temporal). The IT layer, similar to the final layer of trained DNNs, determine the object in the image.
 
-In this experiment, comparison was made between 2 of 5 regions in visual cortex of primate brain (V4 & IT) and popular DNN models. Some of the DNN models which were used for the comparison are:
+In this project, comparison was made between 2 of 5 regions in visual cortex of primate brain (V4 & IT) and popular DNN models. Some of the DNN models which were used for the comparison are:
 
 1. HMO
 2. HMAX
