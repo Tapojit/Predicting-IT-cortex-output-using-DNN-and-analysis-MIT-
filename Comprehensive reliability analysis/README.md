@@ -37,7 +37,7 @@ The V4 and IT matrices are passed as arguments to the Cadieu_RCV object.
 %results will be stored
 results = Cadieu_RCV(covariate_matrix, response_matrix, 'IT & V4');
 ```
-There are more arguments for Cadieu_RCV, but the first three are compulsory. Either three or all arguments need to be entered. If only the first three are entered, default values for the the other arguments are used.
+There are more arguments for *Cadieu_RCV*, but the first three are compulsory. Either three or all arguments need to be entered. If only the first three are entered, default values for the the other arguments are used.
 
 In this case, summary results such as mean explained variance for the entire predicted IT matrix, explained variance for individual channels/columns of predicted IT matrix will be stored in a .mat file with filename 'IT & V4'.
 
