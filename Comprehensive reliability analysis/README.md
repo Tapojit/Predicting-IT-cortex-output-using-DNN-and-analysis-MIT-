@@ -13,7 +13,7 @@ where:
 This metric of determining reliability is used in Cadieu et al.(2)
 
 
-The implementations are in a modular form, that is, multiple functions used for loss calculation and crossvalidation are in object form, so that anyone can create their own loss/crossvalidation implementation and pass them as arguments. Loss function objects here end with *_LM* filename, whereas regression crossvalidation object ends with *_RCV* filename. Only one regression crossvalidation object is here, whose usage will be shown for the purpose of this experiment.
+The implementations are in a modular form, that is, multiple functions used for loss calculation and crossvalidation are in object form, so that anyone can create their own loss/crossvalidation implementation and pass them as arguments. Loss function objects here end with *_LM* filename, whereas regression crossvalidation object ends with *_RCV* filename. Only one regression crossvalidation object is here, whose usage will be shown for the purpose of this project.
 
 For this example, V4 multiunit matrix will be used as covariate matrix.
 
