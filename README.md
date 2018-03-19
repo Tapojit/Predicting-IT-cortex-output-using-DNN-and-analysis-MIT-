@@ -140,4 +140,48 @@ RDM_calc('DNN','Kr');%For Krizhevsky et al. 2012
 RDM_calc('DNN', 'Ze');%For Zeiler & Fergus 2013
 ```
 The RDMS calculated with functions above will be saved with  *'_Model Representations.png'* suffix and *'_Model Representations + IT-fit.png'*.
+
 The RDM_calc function takes in two arguments, data type and neural/model representation name.
+
+**Two valid argument values are**:
+* Neural model=*'NM'*
+* Deep Neural Network=*'DNN'*
+
+To obtain RDMs of IT outputs predicted by HMO, Krizhevsky et al. and Zeiler & Fergus, *IT_predictor* function is used. It takes in arguments the same way as *RDM_calc* does. It predicts IT outputs the same way as *IT_multi* does, but there is only one train/test split of 70:30. 
+
+##  4) Obtaining output from DNN's final fully connected layer (DNN code)
+
+In order to evaluate DNNs, a package called matconvnet is used. This is the link to the package download:
+
+http://www.vlfeat.org/matconvnet/download/matconvnet-1.0-beta24.tar.gz
+
+After downloading, unzipping the package and getting into package directory, run these lines:
+
+```
+mex -setup;
+addpath matlab;
+vl_compilenn;
+```
+This should be done everytime matlab is started in order to use this package.
+These lines of code will generate DNN code, which is a 4096-dimensional output of the final fully-connected layer of pretrained AlexNet model. This is the link to download the model:
+
+http://www.vlfeat.org/matconvnet/models/imagenet-caffe-alex.mat
+
+It should be kept in the same directory as the script below.
+
+```
+net=load('alexnet-caffe');%loading Alexnet
+net=vl_simplenn_tidy(net);%Replacing empty values in Alexnet model with zero
+fcn_shape=net.layers{end-1}.size(3);% Feature count of final fully connected layer 
+img_norm_meta=net.meta.normalization;%AlexNet meta which contains: i) Average image ii) image dimesions used to train model
+if ~exist('imdb.mat','file')
+    image_database(img_norm_meta.imageSize(1),net.meta.normalization.averageImage);%Creating matrix of all input images
+end
+data=load('imdb.mat');%Loading input image database
+net.layers=net.layers(1:end-2);%Keeping model until last fully connected layer
+feat=vl_simplenn(net,data.images.data);%Calculating DNN code of input images
+a=squeeze(feat(end).x).';
+save('AlexNet2012','a');%Saving DNN code
+```
+*imdb.mat* creates a database of input images, which are 227x227x3 center crops of the images. Mean image of pretrained model is subtracted from each image matrix.
+
