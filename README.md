@@ -17,7 +17,7 @@ While the test subject(primate) was being shown test images, neural output was b
 
 https://s3.amazonaws.com/cadieu-etal-ploscb2014/PLoSCB2014_data_20141216.zip
 
-*Only multiunit data were used here.*
+*Only multiunit data was used here.*
 
 The same set of images were used to make inferences in the DNN models in order to obtain output from their last fully connected layer. Here is the link to the data:
 
@@ -70,7 +70,7 @@ The lines of code below calculated such values for HMO, HMAX, V4, Krizhevsky et 
 
 ```
 %Function argument format:
-%IT_multi(label_data_path,'model_keyword',no. of cores)
+%predicted_label_reliability(label_data_path,'model_keyword',no. of cores)
 predicted_label_reliability('PLoSCB2014_data_20141216/PLoSCB2014_data_20141216/NeuralData_IT_multiunits.mat','HMO',16);
 predicted_label_reliability('PLoSCB2014_data_20141216/PLoSCB2014_data_20141216/NeuralData_IT_multiunits.mat','HMAX',16);
 predicted_label_reliability('PLoSCB2014_data_20141216/PLoSCB2014_data_20141216/NeuralData_IT_multiunits.mat','Kr',16);
@@ -147,7 +147,7 @@ The RDM_calc function takes in two arguments, data type and neural/model represe
 * Neural model=*'NM'*
 * Deep Neural Network=*'DNN'*
 
-To obtain RDMs of IT outputs predicted by HMO, Krizhevsky et al. and Zeiler & Fergus, *IT_predictor* function is used. It takes in arguments the same way as *RDM_calc* does. It predicts IT outputs the same way as *IT_multi* does, but there is only one train/test split of 70:30. 
+To obtain RDMs of IT outputs predicted by HMO, Krizhevsky et al. and Zeiler & Fergus, *IT_predictor* function is used. It takes in arguments the same way as *RDM_calc* does. It predicts IT outputs the same way as *predicted_label_reliability* does, but there is only one train/test split of 70:30. 
 
 ##  4) Obtaining output from DNN's final fully connected layer (DNN code)
 
