@@ -1,3 +1,3 @@
-# Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-
+# Predicting Inferior Temporal (IT) multi unit outputs using Deep Neural Nets and their analyses.
 
-[embed]https://github.com/Tapojit/Predicting-IT-cortex-output-using-DNN-and-analysis-MIT-/blob/master/Cadieu_live.pdf[/embed]
+
